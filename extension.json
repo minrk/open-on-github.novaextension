@@ -1,13 +1,13 @@
 {
-  "identifier": "net.minrk.openongithub",
-  "name": "Open on GitHub",
+  "identifier": "net.minrk.githubtools",
+  "name": "GitHub tools",
   "organization": "minrk",
-  "description": "Open the current file on GitHub",
+  "description": "Tools for working with GitHub (open on GitHub)",
   "version": "1.0",
   "categories": ["commands"],
   "license": "MIT",
-  "homepage": "https://github.com/minrk/open-on-github.novaextension",
-  "bugs": "https://github.com/minrk/open-on-github.novaextension/issues",
+  "homepage": "https://github.com/minrk/github-tools.novaextension",
+  "bugs": "https://github.com/minrk/github-tools.novaextension/issues",
 
   "main": "main.js",
 
@@ -21,17 +21,23 @@
     "extensions": [
       {
         "title": "Open on GitHub",
-        "command": "open-on-github.openFile"
+        "command": "github-tools.openFile"
       }
     ]
   },
 
   "config": [
     {
-      "key": "open-on-github.remoteName",
-      "title": "Select the remote to use",
+      "key": "github-tools.remoteName",
+      "title": "Select the remote to use when opening files on GitHub",
       "type": "string",
       "default": "origin"
+    },
+    {
+      "key": "github-tools.checkRefExists",
+      "title": "Check if ref exists using `gh` GitHub CLI before browsing",
+      "type": "boolean",
+      "default": true
     }
   ]
 }

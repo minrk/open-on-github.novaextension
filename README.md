@@ -2,6 +2,8 @@ My tools for working with GitHub
 
 Currently only one command: Open on GitHub.
 
+## Open on GitHub
+
 Open the current file (or selected line range) on GitHub.
 
 There are a bunch of these, but none seem to work for me,
@@ -14,7 +16,7 @@ Assumptions:
 - The latest ref on the current branch is available on `origin` (e.g. in a PR or on a branch)
 
 Uses the `gh` command-line tool to check if the latest commit is available on `origin`.
-If it's not, it will
+If it's not, it will open on HEAD instead.
 
 The idea here is to always browse somewhere, rather than refusing to do anything if it can't guess where to browse,
 which is what other GitHub extensions seem to choose.
@@ -22,7 +24,7 @@ which is what other GitHub extensions seem to choose.
 ## TODO
 
 - use tracking branch, if defined
-- make requests directly to the GitHub API to check for refs instead of relying on `gh`
+- make requests directly to the GitHub API to check for refs instead of relying on `gh` (I chose `gh` because I use it and it avoid)
 - error handling
 
 ## Usage

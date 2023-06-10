@@ -6,7 +6,7 @@ exports.deactivate = function () {
   // Clean up state before the extension is deactivated
 };
 
-nova.commands.register("open-on-github.openFile", async (workspace) => {
+nova.commands.register("github-tools.openFile", async (workspace) => {
   var url = await getUrl(workspace);
   nova.openURL(url);
 });
@@ -66,17 +66,19 @@ async function getRemoteUrl(repoRoot, remote) {
 }
 
 async function doesRefExist(repoUrl, commitSHA) {
-  // gh api repos/minrk/open-on-github.novaextension/commits/ce18f3212cc74a86f5f37a66d53a2932a4406ca7
+  // gh api repos/minrk/github-tools.novaextension/commits/ce18f3212cc74a86f5f37a66d53a2932a4406ca7 -t {{ .sha }}
   const hostPath = repoUrl.split("://")[1];
   const pathIndex = hostPath.indexOf("/");
   const host = hostPath.slice(0, pathIndex);
   const repo = hostPath.slice(pathIndex + 1);
+
+  // TODO: use `gh auth status -t` just to get token
+  // then make request ourselves (unauthenticated if no token)
   let gh;
   try {
     gh = await getOutput("/usr/bin/which", ["gh"]);
   } catch (e) {
     // can't check with `gh`, assume True
-
     return true;
   }
   try {
@@ -105,13 +107,20 @@ async function getUrl(workspace) {
     nova.path.dirname(doc.path)
   );
   const pathInRepo = nova.path.relative(doc.path, repoRoot);
-  const remoteName = nova.config.get("open-on-github.remoteName") || "origin";
+  const remoteName = nova.config.get("github-tools.remoteName") || "origin";
   let remoteUrl = await getRemoteUrl(repoRoot, remoteName);
 
   let HEAD = await getOutput(git, ["rev-parse", "HEAD"], repoRoot);
   // assumes HEAD is available as a ref on origin (works 99% for me)
   // TODO: resolve default branch or tracking branch
-  let refExists = await doesRefExist(remoteUrl, HEAD);
+
+  let refExists;
+  if (nova.config.get("github-tools.checkRefExists")) {
+    refExists = await doesRefExist(remoteUrl, HEAD);
+  } else {
+    // assume true if we don't check
+    refExists = true;
+  }
   if (!refExists) {
     // ref doesn't exist, use HEAD to ensure we have a valid URL
     // line numbers might not be right, but at least it will open a file
