@@ -1,4 +1,4 @@
-My tools for working with GitHub
+My tools for working with GitHub from Nova.
 
 Currently only one command: Open on GitHub.
 
@@ -10,10 +10,12 @@ There are a bunch of these, but none seem to work for me,
 often because they require the current branch to be tracking a remote,
 when I ~always want to open a file on the 'origin' repo,
 so that's what this does.
+None of the other extensions seem to be maintained, either, so I can't fix them myself.
 
 Assumptions:
 
-- The latest ref on the current branch is available on `origin` (e.g. in a PR or on a branch)
+- Consistent remote naming (i.e. `origin`, the default or `upstream`, etc.).
+- The latest ref on the current branch is usually available on `origin` (e.g. in a PR or on a branch)
 
 Uses the `gh` command-line tool to check if the latest commit is available on `origin`.
 If it's not, it will open on HEAD instead.

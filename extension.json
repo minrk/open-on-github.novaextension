@@ -29,7 +29,7 @@
   "config": [
     {
       "key": "github-tools.remoteName",
-      "title": "Select the remote to use when opening files on GitHub",
+      "title": "Remote to use when opening files on GitHub",
       "type": "string",
       "default": "origin"
     },
