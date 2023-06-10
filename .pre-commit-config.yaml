@@ -22,3 +22,6 @@ repos:
     rev: v8.42.0
     hooks:
       - id: eslint
+        additional_dependencies:
+          - "eslint@^8.40.0"
+          - "eslint-plugin-nova@^1.7.0"

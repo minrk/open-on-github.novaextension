@@ -1,10 +1,13 @@
 {
-  "name": "github-tools.novaextension",
+  "name": "@minrk/github-tools.novaextension",
   "version": "1.0.0",
   "description": "",
   "main": "Scripts/main.js",
   "author": "",
   "license": "MIT",
+  "scripts": {
+    "eslint": "eslint Scripts/main.js"
+  },
   "devDependencies": {
     "eslint": "^8.42.0",
     "eslint-plugin-nova": "^1.7.0"
