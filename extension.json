@@ -26,5 +26,12 @@
     ]
   },
 
-  "config": []
+  "config": [
+    {
+      "key": "open-on-github.remoteName",
+      "title": "Select the remote to use",
+      "type": "string",
+      "default": "origin"
+    }
+  ]
 }

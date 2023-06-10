@@ -65,19 +65,60 @@ async function getRemoteUrl(repoRoot, remote) {
   return url;
 }
 
+async function doesRefExist(repoUrl, commitSHA) {
+  // gh api repos/minrk/open-on-github.novaextension/commits/ce18f3212cc74a86f5f37a66d53a2932a4406ca7
+  const hostPath = repoUrl.split("://")[1];
+  const pathIndex = hostPath.indexOf("/");
+  const host = hostPath.slice(0, pathIndex);
+  const repo = hostPath.slice(pathIndex + 1);
+  let gh;
+  try {
+    gh = await getOutput("/usr/bin/which", ["gh"]);
+  } catch (e) {
+    // can't check with `gh`, assume True
+
+    return true;
+  }
+  try {
+    await getOutput(gh, [
+      "api",
+      "--hostname",
+      host,
+      `repos/${repo}/git/commits/${commitSHA}`,
+      "-t",
+      "{{ .sha }}",
+    ]);
+  } catch (e) {
+    // check failed (check for 404?)
+    console.log("error", e);
+    return false;
+  }
+  return true;
+}
+
 async function getUrl(workspace) {
   const editor = workspace.activeTextEditor;
   const doc = editor.document;
-  let repoRoot = await getOutput(
+  const repoRoot = await getOutput(
     git,
     ["rev-parse", "--show-toplevel"],
     nova.path.dirname(doc.path)
   );
+  const pathInRepo = nova.path.relative(doc.path, repoRoot);
+  const remoteName = nova.config.get("open-on-github.remoteName") || "origin";
+  let remoteUrl = await getRemoteUrl(repoRoot, remoteName);
+
   let HEAD = await getOutput(git, ["rev-parse", "HEAD"], repoRoot);
   // assumes HEAD is available as a ref on origin (works 99% for me)
   // TODO: resolve default branch or tracking branch
-  let pathInRepo = nova.path.relative(doc.path, repoRoot);
-  let remoteUrl = await getRemoteUrl(repoRoot, "origin");
+  let refExists = await doesRefExist(remoteUrl, HEAD);
+  if (!refExists) {
+    // ref doesn't exist, use HEAD to ensure we have a valid URL
+    // line numbers might not be right, but at least it will open a file
+    HEAD = "HEAD";
+  }
+
+  // identify selected lines
   let lines = rangeToLines(doc, editor.selectedRange);
   let lineSlug = `L${lines.start}`;
   if (lines.end > lines.start) {
@@ -85,8 +126,7 @@ async function getUrl(workspace) {
   }
 
   // TODO: options for line link or not
-  const url = `${remoteUrl}/blob/${HEAD}/${pathInRepo}#${lineSlug}`;
-  return url;
+  return `${remoteUrl}/blob/${HEAD}/${pathInRepo}#${lineSlug}`;
 }
 
 // adapted from https://github.com/apexskier/nova-typescript/blob/main/src/lspNovaConversions.ts
@@ -110,5 +150,6 @@ function rangeToLines(document, range) {
     }
     offset += lineLength;
   }
+  // TODO: can this happen?
   return null;
 }
