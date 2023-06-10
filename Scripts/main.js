@@ -31,7 +31,9 @@ function getOutput(exe, args, cwd) {
   process.onStderr((line) => console.log(line));
   const stdoutPromise = new Promise((resolve, reject) => {
     process.onDidExit((status) => {
-      console.log(`${exe} ${args} in ${cwd} exited with code ${status}`);
+      if (status === 0) {
+        console.log(`${exe} ${args} in ${cwd} exited with code ${status}`);
+      }
       const action = status == 0 ? resolve : reject;
 
       action(stdoutLines.join("").trim());
@@ -43,20 +45,9 @@ function getOutput(exe, args, cwd) {
 }
 
 async function getRemoteUrl(repoRoot, remote) {
-  const out = await getOutput(git, ["remote", "-v"], repoRoot);
-  console.log("out", out);
-  let url;
-  for (var line of out.split("\n")) {
-    line = line.trim();
-    var cols = line.split(/\s+/);
-    let lineRemote = cols[0];
-    if (lineRemote === remote) {
-      url = cols[1];
-      break;
-    }
-  }
+  const out = await getOutput(git, ["remote", "get-url", remote], repoRoot);
+  let url = out.trim();
   // TODO: handle remote not found
-  if (url) console.log("found", url);
   if (url.slice(-4) === ".git") {
     // trim trailing .git
     url = url.slice(0, -4);
@@ -70,7 +61,7 @@ async function getRemoteUrl(repoRoot, remote) {
     const path = parts[1];
     url = `https://${host}/${path}`;
   }
-  // TODO: check that it's GitHub
+  // TODO: check that it's GitHub?
   return url;
 }
 
@@ -85,16 +76,15 @@ async function getUrl(workspace) {
   let HEAD = await getOutput(git, ["rev-parse", "HEAD"], repoRoot);
   // assumes HEAD is available as a ref on origin (works 99% for me)
   // TODO: resolve default branch or tracking branch
-  console.log(repoRoot);
   let pathInRepo = nova.path.relative(doc.path, repoRoot);
-  console.log("editor", doc, doc.path, repoRoot, pathInRepo);
   let remoteUrl = await getRemoteUrl(repoRoot, "origin");
-  let range = editor.selectedRange;
-  let lines = rangeToLines(doc, range);
+  let lines = rangeToLines(doc, editor.selectedRange);
   let lineSlug = `L${lines.start}`;
   if (lines.end > lines.start) {
     lineSlug = `L${lines.start}L${lines.end}`;
   }
+
+  // TODO: options for line link or not
   const url = `${remoteUrl}/blob/${HEAD}/${pathInRepo}#${lineSlug}`;
   return url;
 }

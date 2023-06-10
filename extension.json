@@ -1,8 +1,8 @@
 {
   "identifier": "net.minrk.openongithub",
-  "name": "open-on-github",
+  "name": "Open on GitHub",
   "organization": "minrk",
-  "description": "Lorem ipsum, dolor sit amet.",
+  "description": "Open the current file on GitHub",
   "version": "1.0",
   "categories": ["commands"],
   "license": "MIT",
@@ -14,7 +14,6 @@
   "activationEvents": [],
 
   "entitlements": {
-    "filesystem": "read",
     "process": true
   },
 
