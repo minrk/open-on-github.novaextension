@@ -1,72 +1,31 @@
-<!--
-👋 Hello! As Nova users browse the extensions library, a good README can help them understand what your extension does, how it works, and what setup or configuration it may require.
+My tools for working with GitHub
 
-Not every extension will need every item described below. Use your best judgement when deciding which parts to keep to provide the best experience for your new users.
+Currently only one command: Open on GitHub.
 
-💡 Quick Tip! As you edit this README template, you can preview your changes by selecting **Extensions → Activate Project as Extension**, opening the Extension Library, and selecting "open-on-github" in the sidebar.
+Open the current file (or selected line range) on GitHub.
 
-Let's get started!
--->
+There are a bunch of these, but none seem to work for me,
+often because they require the current branch to be tracking a remote,
+when I ~always want to open a file on the 'origin' repo,
+so that's what this does.
 
-<!--
-🎈 Include a brief description of the features your extension provides. For example:
--->
+Assumptions:
 
-**open-on-github** provides integration with **A Helpful Tool**, including the most important feature, something that's really helpful, and _a little-known secret!_
+- The latest ref on the current branch is available on `origin` (e.g. in a PR or on a branch)
 
-<!--
-🎈 It can also be helpful to include a screenshot or GIF showing your extension in action:
--->
+Uses the `gh` command-line tool to check if the latest commit is available on `origin`.
+If it's not, it will
 
-![](https://nova.app/images/en/dark/editor.png)
+The idea here is to always browse somewhere, rather than refusing to do anything if it can't guess where to browse,
+which is what other GitHub extensions seem to choose.
 
-## Requirements
+## TODO
 
-<!--
-🎈 If your extension depends on external processes or tools that users will need to have, it's helpful to list those and provide links to their installers:
--->
-
-open-on-github requires some additional tools to be installed on your Mac:
-
-- [Node.js 8.2.0](https://nodejs.org) and NPM 5.2.0 or newer
-
-<!--
-✨ Providing tips, tricks, or other guides for installing or configuring external dependencies can go a long way toward helping your users have a good setup experience:
--->
-
-> To install the current stable version of Node, click the "Recommended for Most Users" button to begin the download. When that completes, double-click the **.pkg** installer to begin installation.
+- use tracking branch, if defined
+- make requests directly to the GitHub API to check for refs instead of relying on `gh`
+- error handling
 
 ## Usage
 
-<!--
-🎈 If users will interact with your extension manually, describe those options:
--->
-
-To run open-on-github:
-
-- Select the **Editor → open-on-github** menu item; or
-- Open the command palette and type `open-on-github`
-
-<!--
-🎈 Alternatively, if your extension runs automatically (as in the case of a validator), consider showing users what they can expect to see:
--->
-
-open-on-github runs any time you open a local project, automatically lints all open files, then reports errors and warnings in Nova's **Issues** sidebar and the editor gutter:
-
-![](https://nova.app/images/en/light/tools/sidebars.png)
-
-### Configuration
-
-<!--
-🎈 If your extension offers global- or workspace-scoped preferences, consider pointing users toward those settings. For example:
--->
-
-To configure global preferences, open **Extensions → Extension Library...** then select open-on-github's **Preferences** tab.
-
-You can also configure preferences on a per-project basis in **Project → Project Settings...**
-
-<!--
-👋 That's it! Happy developing!
-
-P.S. If you'd like, you can remove these comments before submitting your extension 😉
--->
+Defines the command "Open on GitHub" command, which opens the current file (and selected line range) on GitHub.
+No default key-bindings, but I use cmd-option-G.
