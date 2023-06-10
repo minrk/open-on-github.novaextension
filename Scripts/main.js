@@ -31,7 +31,7 @@ function getOutput(exe, args, cwd) {
   process.onStderr((line) => console.log(line));
   const stdoutPromise = new Promise((resolve, reject) => {
     process.onDidExit((status) => {
-      if (status === 0) {
+      if (status !== 0) {
         console.log(`${exe} ${args} in ${cwd} exited with code ${status}`);
       }
       const action = status == 0 ? resolve : reject;
