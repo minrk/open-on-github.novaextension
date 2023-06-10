@@ -1,38 +1,31 @@
 {
-    "identifier": "net.minrk.openongithub",
-    "name": "open-on-github",
-    "organization": "minrk",
-    "description": "Lorem ipsum, dolor sit amet.",
-    "version": "1.0",
-    "categories": ["commands"],
+  "identifier": "net.minrk.openongithub",
+  "name": "open-on-github",
+  "organization": "minrk",
+  "description": "Lorem ipsum, dolor sit amet.",
+  "version": "1.0",
+  "categories": ["commands"],
+  "license": "MIT",
+  "homepage": "https://github.com/minrk/open-on-github.novaextension",
+  "bugs": "https://github.com/minrk/open-on-github.novaextension/issues",
 
-    "main": "main.js",
+  "main": "main.js",
 
-    "activationEvents": [],
+  "activationEvents": [],
 
-    "entitlements": {
-        "filesystem": "read", "process": true
-    },
+  "entitlements": {
+    "filesystem": "read",
+    "process": true
+  },
 
-    "commands": {
-        "extensions": [
-            {
-                "title": "Open URL",
-                "command": "open-on-github.openURL"
-            },
-            {
-                "title": "Run External Tool",
-                "command": "open-on-github.runExternalTool"
-            }
-        ]
-    },
-
-    "config": [
-        {
-            "key": "open-on-github.foobar",
-            "title": "Foo the bar",
-            "type": "boolean",
-            "default": false
-        }
+  "commands": {
+    "extensions": [
+      {
+        "title": "Open on GitHub",
+        "command": "open-on-github.openFile"
+      }
     ]
+  },
+
+  "config": []
 }

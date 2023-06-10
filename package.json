@@ -1,0 +1,12 @@
+{
+  "name": "open-on-github.novaextension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Scripts/main.js",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.42.0",
+    "eslint-plugin-nova": "^1.7.0"
+  }
+}
