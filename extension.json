@@ -1,0 +1,38 @@
+{
+    "identifier": "net.minrk.openongithub",
+    "name": "open-on-github",
+    "organization": "minrk",
+    "description": "Lorem ipsum, dolor sit amet.",
+    "version": "1.0",
+    "categories": ["commands"],
+
+    "main": "main.js",
+
+    "activationEvents": [],
+
+    "entitlements": {
+        "filesystem": "read", "process": true
+    },
+
+    "commands": {
+        "extensions": [
+            {
+                "title": "Open URL",
+                "command": "open-on-github.openURL"
+            },
+            {
+                "title": "Run External Tool",
+                "command": "open-on-github.runExternalTool"
+            }
+        ]
+    },
+
+    "config": [
+        {
+            "key": "open-on-github.foobar",
+            "title": "Foo the bar",
+            "type": "boolean",
+            "default": false
+        }
+    ]
+}
